@@ -24,53 +24,53 @@ import java.util.List;
  *             ∨            |
  *            FAIL <---------
  */
-public enum StatusFactory implements IFactory, IFlower<StatusFactory> {
+public enum ProcessStatus implements IFactory, IFlower<ProcessStatus> {
     INIT(0){
         @Override
-        public final List<StatusFactory> nextOptions() {
+        public final List<ProcessStatus> nextOptions() {
             return Arrays.asList(HANDER);
         }
     },
     HANDER(16){
         @Override
-        public final List<StatusFactory> nextOptions() {
-            return Arrays.asList(StatusFactory.FAIL, StatusFactory.SUP, StatusFactory.S);
+        public final List<ProcessStatus> nextOptions() {
+            return Arrays.asList(ProcessStatus.FAIL, ProcessStatus.SUP, ProcessStatus.S);
         }
     },
     SUP(22){
         @Override
-        public final List<StatusFactory> nextOptions() {
-            return Arrays.asList(StatusFactory.FAIL, StatusFactory.HANDER,
-                    StatusFactory.CANCEL, StatusFactory.S);
+        public final List<ProcessStatus> nextOptions() {
+            return Arrays.asList(ProcessStatus.FAIL, ProcessStatus.HANDER,
+                    ProcessStatus.CANCEL, ProcessStatus.S);
         }
     },
     CANCEL(38){
         @Override
-        public final List<StatusFactory> nextOptions() {
-            return Arrays.asList(StatusFactory.OVER);
+        public final List<ProcessStatus> nextOptions() {
+            return Arrays.asList(ProcessStatus.OVER);
         }
     },
 
     S(36){
         @Override
-        public final List<StatusFactory> nextOptions() {
+        public final List<ProcessStatus> nextOptions() {
             return Collections.emptyList();
         }
     },
     FAIL(38){
         @Override
-        public final List<StatusFactory> nextOptions() {
+        public final List<ProcessStatus> nextOptions() {
             return Collections.emptyList();
         }
     },
     OVER(38){
         @Override
-        public final List<StatusFactory> nextOptions() {
+        public final List<ProcessStatus> nextOptions() {
             return Collections.emptyList();
         }
     };
 
-    StatusFactory(int weight){
+    ProcessStatus(int weight){
         this.weight = weight;
     }
 
@@ -81,17 +81,17 @@ public enum StatusFactory implements IFactory, IFlower<StatusFactory> {
 
 
     @Override
-    public final StatusFactory next() {
+    public final ProcessStatus next() {
         return next(new DefaultHander());
     }
 
     @Override
-    public final StatusFactory next(IHander<StatusFactory> hander) {
+    public final ProcessStatus next(IHander<ProcessStatus> hander) {
         return next(this, hander);
     }
 
     @Override
-    public StatusFactory next(StatusFactory target, IHander<StatusFactory> hander) {
+    public ProcessStatus next(ProcessStatus target, IHander<ProcessStatus> hander) {
         // 终态， 返回自己
         if(target.nextOptions().isEmpty()){
            return target;
@@ -103,7 +103,7 @@ public enum StatusFactory implements IFactory, IFlower<StatusFactory> {
         }
 
         // 决策 TODO
-        StatusFactory next = hander.hander(target);
+        ProcessStatus next = hander.hander(target);
         if(next.getWeight() - target.getWeight() < 0 && Math.abs(next.getWeight() - target.getWeight()) > 8){
             // 允许跨界升值  next.getWeight() - target.getWeight() > 0
             // 降值跨度不允许大于 8

@@ -1,37 +1,36 @@
 package com.yueny.brainstorming.status.stragy;
 
 import com.yueny.brainstorming.status.IFactory;
-import com.yueny.brainstorming.status.StatusFactory;
+import com.yueny.brainstorming.status.ProcessStatus;
 import com.yueny.brainstorming.status.hander.IHander;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
 @Service
-public class InitStragy implements IStragy<StatusFactory> {
+public class InitStragy implements IStragy<ProcessStatus> {
 //    @Autowired
 //    private ASerive  a;
 
     Random random = new Random();
     @Override
-    public IFactory action(StatusFactory target, Object req) {
+    public IFactory action(ProcessStatus target, Object req) {
         IFactory next = null;
 
         if(random.nextInt()%3 == 0){
             next = target.next();
         }else if(random.nextInt()%3 == 1){
-            next = target.next(new IHander<StatusFactory>() {
+            next = target.next(new IHander<ProcessStatus>() {
                 @Override
-                public StatusFactory hander(StatusFactory target) {
-                    return StatusFactory.S.next();
+                public ProcessStatus hander(ProcessStatus target) {
+                    return ProcessStatus.S.next();
                 }
             });
         }else{
-            next = target.next(new IHander<StatusFactory>() {
+            next = target.next(new IHander<ProcessStatus>() {
                 @Override
-                public StatusFactory hander(StatusFactory target) {
-                    return StatusFactory.CANCEL.next();
+                public ProcessStatus hander(ProcessStatus target) {
+                    return ProcessStatus.CANCEL.next();
                 }
             });
         }

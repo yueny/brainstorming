@@ -1,13 +1,13 @@
 package com.yueny.brainstorming.status.hander;
 
-import com.yueny.brainstorming.status.StatusFactory;
+import com.yueny.brainstorming.status.ProcessStatus;
 
 /**
  * 默认决策
  */
-public class DefaultHander implements IHander<StatusFactory> {
+public class DefaultHander implements IHander<ProcessStatus> {
     @Override
-    public StatusFactory hander(StatusFactory target) {
+    public ProcessStatus hander(ProcessStatus target) {
         // 终态， 返回自己
         if(target.nextOptions().isEmpty()){
             return target;
@@ -18,8 +18,8 @@ public class DefaultHander implements IHander<StatusFactory> {
         }
 
         // 多个下一状态的时候，取值最近的一个进行跃迁。 目前是取绝对值最近的，可以更改为正相关和最近相关
-        StatusFactory min = null;
-        for (StatusFactory statusFactory: target.nextOptions()) {
+        ProcessStatus min = null;
+        for (ProcessStatus statusFactory: target.nextOptions()) {
             if(min == null){
                 min = statusFactory;
                 continue;

@@ -14,7 +14,7 @@ public interface IFlower<E extends IFactory> {
      *
      * @return
      */
-    List<StatusFactory> nextOptions();
+    List<ProcessStatus> nextOptions();
 
     /**
      * 当前状态枚举的下一节点， 不需要决策，采用默认决策
